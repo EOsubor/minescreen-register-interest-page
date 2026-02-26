@@ -1,0 +1,13 @@
+<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Mountain shape -->
+  <path d="M8 42 L18 22 L24 30 L32 14 L42 28 L48 42 Z" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M8 42 L18 22 L24 30 L32 14 L42 28 L48 42 Z" fill="url(#mtnGrad)" opacity="0.18"/>
+  <!-- Seismic/data line -->
+  <path d="M8 32 L16 30 L22 36 L28 24 L34 32 L40 28 L48 30" fill="none" stroke="#D4956B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <defs>
+    <linearGradient id="mtnGrad" x1="28" y1="14" x2="28" y2="42">
+      <stop offset="0%" stop-color="white"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg>
