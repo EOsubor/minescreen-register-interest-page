@@ -10,6 +10,8 @@ const port = process.env.PLAYWRIGHT_PORT
   ? Number(process.env.PORT)
   : 3100;
 const reuseExistingServer = process.env.PLAYWRIGHT_REUSE === "1";
+const isRemote = Boolean(process.env.PLAYWRIGHT_BASE_URL);
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://localhost:${port}`;
 
 export default defineConfig({
   testDir: "e2e",
@@ -21,10 +23,10 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: "html",
   use: {
-    baseURL: `http://localhost:${port}`,
+    baseURL,
     trace: "on-first-retry",
   },
-  webServer: reuseExistingServer
+  webServer: reuseExistingServer || isRemote
     ? undefined
     : {
         command: `npm run dev -- --hostname localhost --port ${port}`,

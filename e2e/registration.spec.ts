@@ -1,5 +1,8 @@
 import { test, expect, type Page } from "@playwright/test";
 
+const isRemote = Boolean(process.env.PLAYWRIGHT_BASE_URL);
+const failureTest = isRemote ? test.skip : test;
+
 async function fillRequiredFields(
   page: Page,
   {
@@ -48,7 +51,7 @@ test.describe("Registration flow", () => {
     ).toBeVisible();
   });
 
-  test("shows failure state when Supabase insert fails", async ({ page }) => {
+  failureTest("shows failure state when Supabase insert fails", async ({ page }) => {
     const email = `qa-${Date.now()}@fail.test`;
     await fillRequiredFields(page, {
       fullName: "QA Tester",
