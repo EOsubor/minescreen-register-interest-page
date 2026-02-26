@@ -64,6 +64,6 @@ export async function registerInterest(
   return {
     success: true,
     message:
-      "Thank you for registering! We'll be in touch before PDAC 2026.",
+      "Thank you for registering! We'll keep you updated on demos and the MVP.",
   };
 }

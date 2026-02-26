@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { registerInterest } from "@/app/lib/actions";
 import { INTEREST_AREAS, type FormState } from "@/app/lib/schema";
 import { Button } from "./ui/button";
@@ -34,6 +34,9 @@ export function RegistrationForm() {
 }
 
 export function RegistrationFormView({ state, formAction, isPending }: RegistrationFormViewProps) {
+  const [otherChecked, setOtherChecked] = useState(false);
+  const showOtherField = otherChecked || Boolean(state.errors?.other_interest?.length);
+
   if (state.success && state.message) {
     return (
       <section id="register" className="py-16 sm:py-20 lg:py-24 px-5 sm:px-6">
@@ -64,13 +67,13 @@ export function RegistrationFormView({ state, formAction, isPending }: Registrat
       <div className="mx-auto max-w-2xl">
         <div className="text-center mb-10 sm:mb-12 reveal">
           <p className="font-mono text-sm tracking-widest text-copper-light uppercase mb-3">
-            PDAC 2026
+            Stay in the Loop
           </p>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-off-white">
             Register Your Interest
           </h2>
           <p className="mt-4 text-off-white/60 leading-relaxed">
-            Get priority access to our live demo at PDAC 2026 and early platform updates.
+            Be the first to hear about demo availability, product updates, and MVP access.
           </p>
         </div>
 
@@ -128,14 +131,23 @@ export function RegistrationFormView({ state, formAction, isPending }: Registrat
             options={INTEREST_AREAS}
             required
             error={state.errors?.interest_areas}
+            onChange={(event) => {
+              if (event.target.value === "Other") {
+                setOtherChecked(event.target.checked);
+              }
+            }}
           />
 
-          <Input
-            label="Other Interest (optional)"
-            name="other_interest"
-            placeholder="Describe any specific use case..."
-            error={state.errors?.other_interest}
-          />
+          {showOtherField ? (
+            <Input
+              label="Other Interest (optional)"
+              name="other_interest"
+              placeholder="Describe any specific use case..."
+              error={state.errors?.other_interest}
+            />
+          ) : (
+            <input type="hidden" name="other_interest" value="" />
+          )}
 
           <Textarea
             label="Message (optional)"
@@ -170,13 +182,12 @@ export function RegistrationFormView({ state, formAction, isPending }: Registrat
                 Submitting...
               </>
             ) : (
-              "Register for PDAC 2026"
+              "Register"
             )}
           </Button>
 
           <p className="text-center text-xs text-off-white/30">
-            Your information is kept confidential and will only be used for PDAC 2026
-            communications.
+            Your information is kept confidential and used only for MineScreen updates.
           </p>
         </form>
       </div>

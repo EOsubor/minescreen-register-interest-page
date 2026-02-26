@@ -27,11 +27,11 @@ test.describe("Registration flow", () => {
       interest: "Portfolio Due Diligence",
     });
 
-    await page.getByRole("button", { name: /register for pdac 2026/i }).click();
+    await page.getByRole("button", { name: /^register$/i }).click();
 
     await expect(page.getByRole("heading", { name: /you're registered/i })).toBeVisible();
     await expect(
-      page.getByText(/we'll be in touch before pdac 2026/i)
+      page.getByText(/we'll keep you updated on demos and the mvp/i)
     ).toBeVisible();
   });
 
@@ -39,7 +39,7 @@ test.describe("Registration flow", () => {
     await page.getByLabel("Full Name").fill("A");
     await page.getByLabel("Email").fill("valid@example.com");
 
-    await page.getByRole("button", { name: /register for pdac 2026/i }).click();
+    await page.getByRole("button", { name: /^register$/i }).click();
 
     await expect(page.getByText("Please fix the errors below.")).toBeVisible();
     await expect(page.getByText("Name must be at least 2 characters")).toBeVisible();
@@ -56,7 +56,7 @@ test.describe("Registration flow", () => {
       interest: "Portfolio Due Diligence",
     });
 
-    await page.getByRole("button", { name: /register for pdac 2026/i }).click();
+    await page.getByRole("button", { name: /^register$/i }).click();
 
     await expect(
       page.getByText("Something went wrong. Please try again.")

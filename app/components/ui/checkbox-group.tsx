@@ -1,12 +1,22 @@
+import type { ChangeEventHandler } from "react";
+
 interface CheckboxGroupProps {
   label: string;
   name: string;
   options: readonly string[];
   error?: string[];
   required?: boolean;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
-export function CheckboxGroup({ label, name, options, error, required }: CheckboxGroupProps) {
+export function CheckboxGroup({
+  label,
+  name,
+  options,
+  error,
+  required,
+  onChange,
+}: CheckboxGroupProps) {
   const errorId = error?.length ? `${name}-error` : undefined;
 
   return (
@@ -25,6 +35,7 @@ export function CheckboxGroup({ label, name, options, error, required }: Checkbo
               type="checkbox"
               name={name}
               value={option}
+              onChange={onChange}
               className="h-4 w-4 rounded border-off-white/20 bg-surface-mid text-copper focus:ring-copper/30 focus:ring-offset-0"
             />
             <span className="text-sm text-off-white/80">{option}</span>

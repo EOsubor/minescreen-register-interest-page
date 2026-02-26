@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { RegistrationForm, RegistrationFormView } from "@/app/components/registration-form";
 import type { FormState } from "@/app/lib/schema";
 
@@ -9,7 +10,7 @@ describe("RegistrationForm", () => {
     render(<RegistrationForm />);
 
     expect(screen.getByText("Register Your Interest")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /register for pdac 2026/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^register$/i })).toBeInTheDocument();
   });
 
   test("renders validation errors when state includes them", () => {
@@ -66,5 +67,68 @@ describe("RegistrationForm", () => {
 
     expect(screen.getByText("You're Registered")).toBeInTheDocument();
     expect(screen.getByText("Thanks for registering.")).toBeInTheDocument();
+  });
+
+  test("shows other interest input only when Other is selected", async () => {
+    const user = userEvent.setup();
+    const state: FormState = {
+      success: false,
+      message: "",
+    };
+
+    render(
+      <RegistrationFormView
+        state={state}
+        formAction={noopAction}
+        isPending={false}
+      />
+    );
+
+    expect(screen.queryByLabelText(/other interest/i)).not.toBeInTheDocument();
+
+    await user.click(screen.getByLabelText("Other"));
+    expect(screen.getByLabelText(/other interest/i)).toBeInTheDocument();
+
+    await user.click(screen.getByLabelText("Other"));
+    expect(screen.queryByLabelText(/other interest/i)).not.toBeInTheDocument();
+  });
+
+  test("does not show other interest when a non-Other option is selected", async () => {
+    const user = userEvent.setup();
+    const state: FormState = {
+      success: false,
+      message: "",
+    };
+
+    render(
+      <RegistrationFormView
+        state={state}
+        formAction={noopAction}
+        isPending={false}
+      />
+    );
+
+    await user.click(screen.getByLabelText("Portfolio Due Diligence"));
+    expect(screen.queryByLabelText(/other interest/i)).not.toBeInTheDocument();
+  });
+
+  test("shows other interest input when errors include other_interest", () => {
+    const state: FormState = {
+      success: false,
+      message: "Please fix the errors below.",
+      errors: {
+        other_interest: ["Please describe your other interest"],
+      },
+    };
+
+    render(
+      <RegistrationFormView
+        state={state}
+        formAction={noopAction}
+        isPending={false}
+      />
+    );
+
+    expect(screen.getByLabelText(/other interest/i)).toBeInTheDocument();
   });
 });

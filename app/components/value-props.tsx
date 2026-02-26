@@ -6,10 +6,10 @@ const props = [
       "What takes analysts 2-3 weeks, MineScreen delivers in 2-3 hours. Automated extraction and cross-referencing at scale.",
   },
   {
-    stat: "3 Standards",
+    stat: "3+ Standards",
     label: "NI 43-101 / JORC / S-K 1300",
     description:
-      "Full coverage of global mining disclosure standards. Automated compliance checking and gap analysis.",
+      "Coverage for NI 43-101, JORC, and S-K 1300 today, with SAMREC and Chile/Peru/Brazil standards next.",
   },
   {
     stat: "80+ Fields",

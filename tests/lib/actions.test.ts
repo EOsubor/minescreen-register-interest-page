@@ -97,3 +97,59 @@ describe("registerInterest", () => {
     expect(result.message).toBe("Something went wrong. Please try again.");
   });
 });
+
+describe("registerInterest logging", () => {
+  const originalMock = process.env.SUPABASE_MOCK;
+  const originalUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const originalKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  afterEach(() => {
+    if (originalMock !== undefined) {
+      process.env.SUPABASE_MOCK = originalMock;
+    } else {
+      delete process.env.SUPABASE_MOCK;
+    }
+
+    if (originalUrl !== undefined) {
+      process.env.NEXT_PUBLIC_SUPABASE_URL = originalUrl;
+    } else {
+      delete process.env.NEXT_PUBLIC_SUPABASE_URL;
+    }
+
+    if (originalKey !== undefined) {
+      process.env.SUPABASE_SERVICE_ROLE_KEY = originalKey;
+    } else {
+      delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+    }
+
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  test("logs insert errors when not in mock mode", async () => {
+    process.env.SUPABASE_MOCK = "0";
+
+    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    jest.doMock("@/app/lib/supabase", () => ({
+      getSupabaseClient: () => ({
+        from: () => ({
+          insert: async () => ({ error: { message: "Forced failure" } }),
+        }),
+      }),
+    }));
+
+    const { registerInterest } = await import("@/app/lib/actions");
+
+    const formData = buildFormData({
+      email: `error-${randomUUID()}@example.com`,
+    });
+
+    const result = await registerInterest({ success: false, message: "" }, formData);
+
+    expect(result.success).toBe(false);
+    expect(consoleSpy).toHaveBeenCalled();
+
+    consoleSpy.mockRestore();
+  });
+});

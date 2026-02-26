@@ -32,11 +32,24 @@ describe("getSupabaseClient", () => {
     delete process.env.SUPABASE_SERVICE_ROLE_KEY;
     process.env.SUPABASE_MOCK = "1";
 
-    const client = getSupabaseClient();
+    const client = getSupabaseClient() as unknown as {
+      from: (table: string) => {
+        insert: (payload: unknown) => Promise<{ error: { message: string } | null }>;
+        delete: () => {
+          eq: (_field: string, _value: string) => Promise<{ error: null }>;
+        };
+      };
+    };
     expect(typeof client.from).toBe("function");
 
     const result = await client.from("registrations").insert({ email: "qa@example.com" });
     expect(result.error).toBeNull();
+
+    const deleteResult = await client
+      .from("registrations")
+      .delete()
+      .eq("email", "qa@example.com");
+    expect(deleteResult.error).toBeNull();
   });
 
   test("mock client surfaces insert failures and unsupported tables", async () => {
@@ -54,6 +67,11 @@ describe("getSupabaseClient", () => {
       .from("registrations")
       .insert([{ email: "qa@fail.test" }, null]);
     expect(failResult.error?.message).toBe("Mock insert failure");
+
+    const nullRowResult = await client
+      .from("registrations")
+      .insert([null, { email: "qa@example.com" }]);
+    expect(nullRowResult.error).toBeNull();
 
     const tableResult = await client.from("other_table").insert({ email: "qa@example.com" });
     expect(tableResult.error?.message).toBe("Mock table not supported");

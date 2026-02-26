@@ -18,7 +18,7 @@ describe("Static sections", () => {
 
     expect(screen.getByText("Hours, Not Weeks")).toBeInTheDocument();
     expect(screen.getByText("Analysis Speed")).toBeInTheDocument();
-    expect(screen.getByText("3 Standards")).toBeInTheDocument();
+    expect(screen.getByText("3+ Standards")).toBeInTheDocument();
     expect(screen.getByText("NI 43-101 / JORC / S-K 1300")).toBeInTheDocument();
     expect(screen.getByText("80+ Fields")).toBeInTheDocument();
     expect(screen.getByText("Metallurgical Data")).toBeInTheDocument();
@@ -29,7 +29,7 @@ describe("Static sections", () => {
   test("HowItWorks renders steps", () => {
     render(<HowItWorks />);
 
-    expect(screen.getByText("Upload Reports")).toBeInTheDocument();
+    expect(screen.getByText("Ingest via API")).toBeInTheDocument();
     expect(screen.getByText("AI Analyzes")).toBeInTheDocument();
     expect(screen.getByText("Receive Intelligence")).toBeInTheDocument();
   });

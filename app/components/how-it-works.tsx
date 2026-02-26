@@ -1,9 +1,9 @@
 const steps = [
   {
     number: "01",
-    title: "Upload Reports",
+    title: "Ingest via API",
     description:
-      "Upload NI 43-101, JORC, or S-K 1300 technical reports in any format. Our system handles PDFs, scanned documents, and multi-section filings.",
+      "Send NI 43-101, JORC, or S-K 1300 reports through our API. We handle PDFs, scanned documents, and multi-section filings.",
   },
   {
     number: "02",
