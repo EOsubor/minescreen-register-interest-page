@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="border-t border-off-white/5 py-12 px-6">
+    <footer className="border-t border-off-white/5 py-10 sm:py-12 px-5 sm:px-6">
       <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-3">
           <svg viewBox="0 0 56 56" fill="none" className="h-6 w-6">
@@ -25,7 +25,7 @@ export function Footer() {
           </span>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-off-white/40">
+        <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left text-sm text-off-white/40">
           <a
             href="mailto:info@minescreen.ai"
             className="hover:text-copper-light transition-colors"

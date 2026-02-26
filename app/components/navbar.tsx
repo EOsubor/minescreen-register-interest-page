@@ -20,9 +20,9 @@ export function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
+      <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-3 px-4 sm:px-6 py-3 sm:py-4">
         <a href="#" className="flex items-center gap-3">
-          <svg viewBox="0 0 56 56" fill="none" className="h-8 w-8">
+          <svg viewBox="0 0 56 56" fill="none" className="h-7 w-7 sm:h-8 sm:w-8">
             <path
               d="M8 42 L18 22 L24 30 L32 14 L42 28 L48 42 Z"
               fill="none"
@@ -50,11 +50,11 @@ export function Navbar() {
               </linearGradient>
             </defs>
           </svg>
-          <span className="text-xl font-bold tracking-tight text-off-white">
+          <span className="text-lg sm:text-xl font-bold tracking-tight text-off-white">
             MineScreen
           </span>
         </a>
-        <span className="rounded-full border border-copper/40 bg-copper/10 px-3 py-1 text-xs font-semibold tracking-wider text-copper-light uppercase">
+        <span className="rounded-full border border-copper/40 bg-copper/10 px-3 py-1 text-[11px] sm:text-xs font-semibold tracking-wider text-copper-light uppercase">
           PDAC 2026
         </span>
       </div>

@@ -52,7 +52,9 @@ export async function registerInterest(
   });
 
   if (error) {
-    console.error("Supabase insert error:", error);
+    if (process.env.SUPABASE_MOCK !== "1") {
+      console.error("Supabase insert error:", error);
+    }
     return {
       success: false,
       message: "Something went wrong. Please try again.",

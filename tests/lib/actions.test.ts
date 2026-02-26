@@ -2,7 +2,6 @@
 
 import { randomUUID } from "node:crypto";
 import { registerInterest } from "@/app/lib/actions";
-import { getSupabaseClient } from "@/app/lib/supabase";
 
 const buildFormData = (overrides: Partial<Record<string, string | string[]>> = {}) => {
   const data: Record<string, string | string[]> = {
@@ -29,21 +28,17 @@ const buildFormData = (overrides: Partial<Record<string, string | string[]>> = {
 };
 
 describe("registerInterest", () => {
-  const supabase = getSupabaseClient();
-  const emailsToClean: string[] = [];
-  const originalKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const originalMock = process.env.SUPABASE_MOCK;
 
-  afterEach(async () => {
-    while (emailsToClean.length) {
-      const email = emailsToClean.pop();
-      if (!email) continue;
-      await supabase.from("registrations").delete().eq("email", email);
-    }
+  beforeAll(() => {
+    process.env.SUPABASE_MOCK = "1";
+  });
 
-    if (originalKey !== undefined) {
-      process.env.SUPABASE_SERVICE_ROLE_KEY = originalKey;
+  afterAll(() => {
+    if (originalMock !== undefined) {
+      process.env.SUPABASE_MOCK = originalMock;
     } else {
-      delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+      delete process.env.SUPABASE_MOCK;
     }
   });
 
@@ -91,17 +86,10 @@ describe("registerInterest", () => {
 
     expect(result.success).toBe(true);
     expect(result.message).toMatch(/Thank you for registering!/);
-
-    emailsToClean.push(email);
   });
 
   test("returns a friendly error when Supabase insert fails", async () => {
-    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      throw new Error("SUPABASE_SERVICE_ROLE_KEY is required for this test.");
-    }
-
-    process.env.SUPABASE_SERVICE_ROLE_KEY = "invalid-key";
-    const formData = buildFormData();
+    const formData = buildFormData({ email: `fail-${randomUUID()}@fail.test` });
 
     const result = await registerInterest({ success: false, message: "" }, formData);
 

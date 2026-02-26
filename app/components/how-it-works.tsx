@@ -21,13 +21,13 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="py-24 px-6 border-t border-off-white/5">
+    <section className="py-16 sm:py-20 lg:py-24 px-5 sm:px-6 border-t border-off-white/5">
       <div className="mx-auto max-w-4xl">
-        <div className="text-center mb-16 reveal">
+        <div className="text-center mb-10 sm:mb-16 reveal">
           <p className="font-mono text-sm tracking-widest text-copper-light uppercase mb-3">
             How It Works
           </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-off-white">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-off-white">
             From Reports to Intelligence
           </h2>
         </div>
@@ -36,17 +36,17 @@ export function HowItWorks() {
           {steps.map((step, i) => (
             <div
               key={step.number}
-              className="reveal flex gap-6 items-start"
+              className="reveal flex flex-col sm:flex-row gap-4 sm:gap-6 items-start"
               style={{ transitionDelay: `${i * 150}ms` }}
             >
-              <span className="shrink-0 flex items-center justify-center h-12 w-12 rounded-lg border border-copper/30 bg-copper/10 font-mono text-lg font-bold text-copper-light">
+              <span className="shrink-0 flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-lg border border-copper/30 bg-copper/10 font-mono text-base sm:text-lg font-bold text-copper-light">
                 {step.number}
               </span>
               <div>
-                <h3 className="text-xl font-semibold text-off-white">
+                <h3 className="text-lg sm:text-xl font-semibold text-off-white">
                   {step.title}
                 </h3>
-                <p className="mt-2 text-off-white/60 leading-relaxed">
+                <p className="mt-2 text-sm sm:text-base text-off-white/60 leading-relaxed">
                   {step.description}
                 </p>
               </div>

@@ -36,10 +36,10 @@ export function RegistrationForm() {
 export function RegistrationFormView({ state, formAction, isPending }: RegistrationFormViewProps) {
   if (state.success && state.message) {
     return (
-      <section id="register" className="py-24 px-6">
+      <section id="register" className="py-16 sm:py-20 lg:py-24 px-5 sm:px-6">
         <div className="mx-auto max-w-2xl">
-          <div className="rounded-2xl border border-copper/30 bg-copper/5 p-12 text-center">
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-copper/20">
+          <div className="rounded-2xl border border-copper/30 bg-copper/5 p-8 sm:p-12 text-center">
+            <div className="mx-auto mb-6 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-copper/20">
               <svg
                 className="h-8 w-8 text-copper-light"
                 fill="none"
@@ -60,13 +60,13 @@ export function RegistrationFormView({ state, formAction, isPending }: Registrat
   }
 
   return (
-    <section id="register" className="py-24 px-6 border-t border-off-white/5">
+    <section id="register" className="py-16 sm:py-20 lg:py-24 px-5 sm:px-6 border-t border-off-white/5">
       <div className="mx-auto max-w-2xl">
-        <div className="text-center mb-12 reveal">
+        <div className="text-center mb-10 sm:mb-12 reveal">
           <p className="font-mono text-sm tracking-widest text-copper-light uppercase mb-3">
             PDAC 2026
           </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-off-white">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-off-white">
             Register Your Interest
           </h2>
           <p className="mt-4 text-off-white/60 leading-relaxed">
@@ -76,7 +76,7 @@ export function RegistrationFormView({ state, formAction, isPending }: Registrat
 
         <form
           action={formAction}
-          className="reveal relative rounded-2xl border border-off-white/5 bg-surface-mid/20 backdrop-blur-sm p-8 space-y-6"
+          className="reveal relative rounded-2xl border border-off-white/5 bg-surface-mid/20 backdrop-blur-sm p-6 sm:p-8 space-y-5 sm:space-y-6"
         >
           {/* Honeypot */}
           <div style={{ display: "none" }} aria-hidden="true">

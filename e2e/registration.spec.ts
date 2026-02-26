@@ -1,0 +1,68 @@
+import { test, expect, type Page } from "@playwright/test";
+
+async function fillRequiredFields(
+  page: Page,
+  {
+    fullName,
+    email,
+    interest,
+  }: { fullName: string; email: string; interest: string }
+) {
+  await page.getByLabel("Full Name").fill(fullName);
+  await page.getByLabel("Email").fill(email);
+  await page.getByLabel(interest).check();
+}
+
+test.describe("Registration flow", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/#register");
+    await expect(page.getByRole("heading", { name: /register your interest/i })).toBeVisible();
+  });
+
+  test("submits successfully", async ({ page }) => {
+    const email = `qa-${Date.now()}@example.com`;
+    await fillRequiredFields(page, {
+      fullName: "QA Tester",
+      email,
+      interest: "Portfolio Due Diligence",
+    });
+
+    await page.getByRole("button", { name: /register for pdac 2026/i }).click();
+
+    await expect(page.getByRole("heading", { name: /you're registered/i })).toBeVisible();
+    await expect(
+      page.getByText(/we'll be in touch before pdac 2026/i)
+    ).toBeVisible();
+  });
+
+  test("shows validation errors", async ({ page }) => {
+    await page.getByLabel("Full Name").fill("A");
+    await page.getByLabel("Email").fill("valid@example.com");
+
+    await page.getByRole("button", { name: /register for pdac 2026/i }).click();
+
+    await expect(page.getByText("Please fix the errors below.")).toBeVisible();
+    await expect(page.getByText("Name must be at least 2 characters")).toBeVisible();
+    await expect(
+      page.getByText("Please select at least one area of interest")
+    ).toBeVisible();
+  });
+
+  test("shows failure state when Supabase insert fails", async ({ page }) => {
+    const email = `qa-${Date.now()}@fail.test`;
+    await fillRequiredFields(page, {
+      fullName: "QA Tester",
+      email,
+      interest: "Portfolio Due Diligence",
+    });
+
+    await page.getByRole("button", { name: /register for pdac 2026/i }).click();
+
+    await expect(
+      page.getByText("Something went wrong. Please try again.")
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /register your interest/i })
+    ).toBeVisible();
+  });
+});
