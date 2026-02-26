@@ -11,7 +11,8 @@ const port = process.env.PLAYWRIGHT_PORT
   : 3100;
 const reuseExistingServer = process.env.PLAYWRIGHT_REUSE === "1";
 const isRemote = Boolean(process.env.PLAYWRIGHT_BASE_URL);
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://localhost:${port}`;
+const isLive = process.env.PLAYWRIGHT_LIVE === "1";
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://127.0.0.1:${port}`;
 
 export default defineConfig({
   testDir: "e2e",
@@ -22,6 +23,7 @@ export default defineConfig({
   fullyParallel: true,
   retries: process.env.CI ? 2 : 0,
   reporter: "html",
+  workers: isLive ? 1 : undefined,
   use: {
     baseURL,
     trace: "on-first-retry",
@@ -29,12 +31,12 @@ export default defineConfig({
   webServer: reuseExistingServer || isRemote
     ? undefined
     : {
-        command: `npm run dev -- --hostname localhost --port ${port}`,
+        command: `npm run dev -- --hostname 127.0.0.1 --port ${port}`,
         port,
         reuseExistingServer,
         env: {
           ...process.env,
-          SUPABASE_MOCK: "1",
+          ...(isLive ? {} : { SUPABASE_MOCK: "1" }),
         },
       },
   projects: [

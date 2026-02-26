@@ -1,7 +1,14 @@
 import { test, expect, type Page } from "@playwright/test";
 
-const isRemote = Boolean(process.env.PLAYWRIGHT_BASE_URL);
-const failureTest = isRemote ? test.skip : test;
+const isLive =
+  process.env.PLAYWRIGHT_LIVE === "1" || Boolean(process.env.PLAYWRIGHT_BASE_URL);
+const failureTest = isLive ? test.skip : test;
+
+function uniqueEmail(prefix: string, domain = "example.com") {
+  const stamp = Date.now().toString(36);
+  const rand = Math.random().toString(36).slice(2, 8);
+  return `${prefix}-${stamp}-${rand}@${domain}`;
+}
 
 async function fillRequiredFields(
   page: Page,
@@ -23,7 +30,7 @@ test.describe("Registration flow", () => {
   });
 
   test("submits successfully", async ({ page }) => {
-    const email = `qa-${Date.now()}@example.com`;
+    const email = uniqueEmail("qa");
     await fillRequiredFields(page, {
       fullName: "QA Tester",
       email,
@@ -52,7 +59,7 @@ test.describe("Registration flow", () => {
   });
 
   failureTest("shows failure state when Supabase insert fails", async ({ page }) => {
-    const email = `qa-${Date.now()}@fail.test`;
+    const email = uniqueEmail("qa", "fail.test");
     await fillRequiredFields(page, {
       fullName: "QA Tester",
       email,
