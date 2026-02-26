@@ -20,6 +20,24 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Live E2E (Real Supabase)
+
+Run a live E2E pass against your local app using the real Supabase creds from `.env.local`:
+
+```bash
+npm run dev -- --hostname 127.0.0.1 --port 3100
+```
+
+In another terminal:
+
+```bash
+PLAYWRIGHT_REUSE=1 PLAYWRIGHT_LIVE=1 npm run test:e2e
+```
+
+Notes:
+- This will insert real rows into the `registrations` table.
+- `PLAYWRIGHT_LIVE=1` disables the Supabase mock and skips the forced-failure test.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
